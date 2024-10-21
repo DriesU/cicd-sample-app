@@ -1,0 +1,20 @@
+version: '3.8'  
+services:
+  webapp:
+    image: driesuy/webapp  #Docker Hub image
+    ports:
+      - "3000:3000"
+    depends_on:
+      - database
+  database:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: testdb
+  test:
+    image: driesuy/webapp  
+    command: ["yarn", "test"]  
+    environment:
+      API_URL: "http://webapp:3000"  # URL webapp 
+    depends_on:
+      - webapp

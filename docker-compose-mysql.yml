@@ -1,0 +1,21 @@
+version: '3.8'  # You can adjust this to your needs
+services:
+  webapp:
+    build:
+      context: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - database
+  database:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: testdb
+  test:
+    image: webapp-webapp  # Use the existing webapp image
+    command: ["yarn", "test"]  # Command to run tests
+    environment:
+      API_URL: "http://webapp:3000"  # URL of the webapp service
+    depends_on:
+      - webapp

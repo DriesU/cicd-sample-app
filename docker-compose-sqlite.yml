@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  webapp:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - database:/app/database   
+    environment:
+      - NODE_ENV=production
+
+volumes:
+  database:  
