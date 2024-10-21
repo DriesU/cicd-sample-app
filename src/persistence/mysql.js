@@ -6,20 +6,20 @@ let knexInstance;
 
 export async function initialize() {
   knexInstance = knex({
-    client: 'mysql2',
+    client: "mysql2",
     connection: process.env.MYSQL_URL,
   });
-  await knexInstance.raw('CREATE DATABASE IF NOT EXISTS `animals`;');
-  await knexInstance.raw('CREATE TABLE IF NOT EXISTS `animals` (`id` INT NOT NULL, `name` VARCHAR(255) NOT NULL, PRIMARY KEY (`id`));');
+  await knexInstance.raw("CREATE DATABASE IF NOT EXISTS `animals`;");
+  await knexInstance.raw("CREATE TABLE IF NOT EXISTS `animals` (`id` INT NOT NULL, `name` VARCHAR(255) NOT NULL, PRIMARY KEY (`id`));");
 
-  const [animalCount] = await knexInstance('animals').count();
+  const [animalCount] = await knexInstance("animals").count();
 
-  if (animalCount['count(*)'] === 0) {
-    await knexInstance('animals').insert(generateFakeData());
-    console.log('Fake data generated');
+  if (animalCount["count(*)"] === 0) {
+    await knexInstance("animals").insert(generateFakeData());
+    console.log("Fake data generated");
   }
 
-  console.log('MySQL database initialized');
+  console.log("MySQL database initialized");
 }
 
 export async function close() {
@@ -28,13 +28,13 @@ export async function close() {
 }
 
 export async function getAnimals() {
-  return await knexInstance('animals').select();
+  return await knexInstance("animals").select();
 }
 
 export async function getAnimal(id) {
-  const animal = await knexInstance('animals').where('id', id).first();
+  const animal = await knexInstance("animals").where("id", id).first();
   if (!animal) {
-    throw Boom.notFound('Animal not found');
+    throw Boom.notFound("Animal not found");
   }
   return animal;
 }
